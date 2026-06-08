@@ -34,6 +34,58 @@ type AvailableChannel struct {
 	SupportedModels    []SupportedModel
 }
 
+const (
+	modelSquareUSDToCNY         = 7
+	modelSquareTokensPerMillion = 1_000_000
+)
+
+// ModelSquareGroup 模型广场公开展示的分组信息。
+type ModelSquareGroup struct {
+	ID               int64   `json:"id"`
+	Name             string  `json:"name"`
+	Platform         string  `json:"platform"`
+	SubscriptionType string  `json:"subscription_type"`
+	RateMultiplier   float64 `json:"rate_multiplier"`
+	IsExclusive      bool    `json:"is_exclusive"`
+}
+
+// ModelSquarePriceSummary 模型广场展示用价格摘要。
+type ModelSquarePriceSummary struct {
+	InputPerMillionUSD  float64 `json:"input_per_million_usd"`
+	OutputPerMillionUSD float64 `json:"output_per_million_usd"`
+	InputPerMillionCNY  float64 `json:"input_per_million_cny"`
+	OutputPerMillionCNY float64 `json:"output_per_million_cny"`
+}
+
+// ModelSquareSitePriceSummary 模型广场展示用本站价格摘要。
+type ModelSquareSitePriceSummary struct {
+	InputPerMillionCNY  float64 `json:"input_per_million_cny"`
+	OutputPerMillionCNY float64 `json:"output_per_million_cny"`
+}
+
+// ModelSquareModel 模型广场公开展示的一行模型定价。
+type ModelSquareModel struct {
+	Name        string                      `json:"name"`
+	TierLabel   string                      `json:"tier_label,omitempty"`
+	Platform    string                      `json:"platform"`
+	ChannelID   int64                       `json:"channel_id"`
+	ChannelName string                      `json:"channel_name"`
+	Group       ModelSquareGroup            `json:"group"`
+	BillingMode string                      `json:"billing_mode"`
+	Official    ModelSquarePriceSummary     `json:"official"`
+	Site        ModelSquareSitePriceSummary `json:"site"`
+	Discount    float64                     `json:"discount"`
+	Pricing     *ChannelModelPricing        `json:"pricing"`
+}
+
+// ModelSquareCatalog 模型广场公开响应。
+type ModelSquareCatalog struct {
+	CurrencyRate float64            `json:"currency_rate"`
+	Unit         string             `json:"unit"`
+	Groups       []ModelSquareGroup `json:"groups"`
+	Models       []ModelSquareModel `json:"models"`
+}
+
 // ListAvailable 返回所有渠道的可用视图：每个渠道附带关联分组信息与支持模型列表。
 //
 // 支持模型通过 (*Channel).SupportedModels() 计算（mapping ∪ pricing 并联）。
@@ -100,6 +152,172 @@ func (s *ChannelService) ListAvailable(ctx context.Context) ([]AvailableChannel,
 		return strings.ToLower(out[i].Name) < strings.ToLower(out[j].Name)
 	})
 	return out, nil
+}
+
+// ListModelSquare 返回未登录用户可见的模型广场数据。
+//
+// 数据来源与用户侧可用渠道一致，但不按具体用户权限过滤：
+//   - 仅展示启用渠道；
+//   - 仅展示启用分组；
+//   - 模型按「分组 + 模型」展开，分组倍率用于计算本站价和折扣；
+//   - 定价缺失时仍保留模型行，但价格摘要为 0，前端可显示为「待配置」。
+func (s *ChannelService) ListModelSquare(ctx context.Context) (*ModelSquareCatalog, error) {
+	channels, err := s.ListAvailable(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	groupsByID := make(map[int64]ModelSquareGroup)
+	models := make([]ModelSquareModel, 0)
+
+	for _, ch := range channels {
+		if ch.Status != StatusActive {
+			continue
+		}
+		for _, g := range ch.Groups {
+			if g.Platform == "" {
+				continue
+			}
+			group := ModelSquareGroup{
+				ID:               g.ID,
+				Name:             g.Name,
+				Platform:         g.Platform,
+				SubscriptionType: g.SubscriptionType,
+				RateMultiplier:   g.RateMultiplier,
+				IsExclusive:      g.IsExclusive,
+			}
+			for _, model := range ch.SupportedModels {
+				if model.Platform != g.Platform {
+					continue
+				}
+				groupsByID[group.ID] = group
+				models = append(models, buildModelSquareRows(ch, group, model)...)
+			}
+		}
+	}
+
+	groups := make([]ModelSquareGroup, 0, len(groupsByID))
+	for _, g := range groupsByID {
+		groups = append(groups, g)
+	}
+	sort.SliceStable(groups, func(i, j int) bool {
+		if groups[i].Platform != groups[j].Platform {
+			return groups[i].Platform < groups[j].Platform
+		}
+		return strings.ToLower(groups[i].Name) < strings.ToLower(groups[j].Name)
+	})
+
+	sort.SliceStable(models, func(i, j int) bool {
+		if models[i].Group.Name != models[j].Group.Name {
+			return strings.ToLower(models[i].Group.Name) < strings.ToLower(models[j].Group.Name)
+		}
+		if models[i].Platform != models[j].Platform {
+			return models[i].Platform < models[j].Platform
+		}
+		return strings.ToLower(models[i].Name) < strings.ToLower(models[j].Name)
+	})
+
+	return &ModelSquareCatalog{
+		CurrencyRate: modelSquareUSDToCNY,
+		Unit:         "million_tokens",
+		Groups:       groups,
+		Models:       models,
+	}, nil
+}
+
+func buildModelSquareRows(ch AvailableChannel, group ModelSquareGroup, model SupportedModel) []ModelSquareModel {
+	if model.Pricing != nil && len(model.Pricing.Intervals) > 0 {
+		rows := make([]ModelSquareModel, 0, len(model.Pricing.Intervals))
+		for _, interval := range model.Pricing.Intervals {
+			official := buildModelSquareIntervalOfficialPrice(model.Pricing, interval)
+			rows = append(rows, buildModelSquareRow(ch, group, model, interval.TierLabel, official))
+		}
+		return rows
+	}
+	return []ModelSquareModel{buildModelSquareRow(ch, group, model, "", buildModelSquareOfficialPrice(model.Pricing))}
+}
+
+func buildModelSquareRow(
+	ch AvailableChannel,
+	group ModelSquareGroup,
+	model SupportedModel,
+	tierLabel string,
+	official ModelSquarePriceSummary,
+) ModelSquareModel {
+	return ModelSquareModel{
+		Name:        model.Name,
+		TierLabel:   tierLabel,
+		Platform:    model.Platform,
+		ChannelID:   ch.ID,
+		ChannelName: ch.Name,
+		Group:       group,
+		BillingMode: modelSquareBillingMode(model.Pricing),
+		Official:    official,
+		Site: ModelSquareSitePriceSummary{
+			InputPerMillionCNY:  official.InputPerMillionCNY * group.RateMultiplier,
+			OutputPerMillionCNY: official.OutputPerMillionCNY * group.RateMultiplier,
+		},
+		Discount: group.RateMultiplier * 10,
+		Pricing:  model.Pricing,
+	}
+}
+
+func buildModelSquareOfficialPrice(pricing *ChannelModelPricing) ModelSquarePriceSummary {
+	if pricing == nil {
+		return ModelSquarePriceSummary{}
+	}
+	inputUSD := pricePerMillion(pricing.InputPrice)
+	outputUSD := pricePerMillion(pricing.OutputPrice)
+	return ModelSquarePriceSummary{
+		InputPerMillionUSD:  inputUSD,
+		OutputPerMillionUSD: outputUSD,
+		InputPerMillionCNY:  inputUSD * modelSquareUSDToCNY,
+		OutputPerMillionCNY: outputUSD * modelSquareUSDToCNY,
+	}
+}
+
+func buildModelSquareIntervalOfficialPrice(pricing *ChannelModelPricing, interval PricingInterval) ModelSquarePriceSummary {
+	if pricing == nil {
+		return ModelSquarePriceSummary{}
+	}
+	if pricing.BillingMode == BillingModeImage || pricing.BillingMode == BillingModePerRequest {
+		requestUSD := priceValue(interval.PerRequestPrice)
+		return ModelSquarePriceSummary{
+			InputPerMillionUSD:  requestUSD,
+			OutputPerMillionUSD: requestUSD,
+			InputPerMillionCNY:  requestUSD * modelSquareUSDToCNY,
+			OutputPerMillionCNY: requestUSD * modelSquareUSDToCNY,
+		}
+	}
+	inputUSD := pricePerMillion(interval.InputPrice)
+	outputUSD := pricePerMillion(interval.OutputPrice)
+	return ModelSquarePriceSummary{
+		InputPerMillionUSD:  inputUSD,
+		OutputPerMillionUSD: outputUSD,
+		InputPerMillionCNY:  inputUSD * modelSquareUSDToCNY,
+		OutputPerMillionCNY: outputUSD * modelSquareUSDToCNY,
+	}
+}
+
+func priceValue(price *float64) float64 {
+	if price == nil {
+		return 0
+	}
+	return *price
+}
+
+func pricePerMillion(price *float64) float64 {
+	if price == nil {
+		return 0
+	}
+	return *price * modelSquareTokensPerMillion
+}
+
+func modelSquareBillingMode(pricing *ChannelModelPricing) string {
+	if pricing == nil || pricing.BillingMode == "" {
+		return string(BillingModeToken)
+	}
+	return string(pricing.BillingMode)
 }
 
 // fillGlobalPricingFallback 对未命中渠道定价的支持模型，从全局 LiteLLM 数据合成一份

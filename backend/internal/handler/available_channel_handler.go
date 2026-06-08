@@ -111,6 +111,47 @@ type userAvailableChannel struct {
 	Platforms   []userChannelPlatformSection `json:"platforms"`
 }
 
+type publicModelSquareGroup struct {
+	ID               int64   `json:"id"`
+	Name             string  `json:"name"`
+	Platform         string  `json:"platform"`
+	SubscriptionType string  `json:"subscription_type"`
+	RateMultiplier   float64 `json:"rate_multiplier"`
+	IsExclusive      bool    `json:"is_exclusive"`
+}
+
+type publicModelSquareOfficialPrice struct {
+	InputPerMillionUSD  float64 `json:"input_per_million_usd"`
+	OutputPerMillionUSD float64 `json:"output_per_million_usd"`
+	InputPerMillionCNY  float64 `json:"input_per_million_cny"`
+	OutputPerMillionCNY float64 `json:"output_per_million_cny"`
+}
+
+type publicModelSquareSitePrice struct {
+	InputPerMillionCNY  float64 `json:"input_per_million_cny"`
+	OutputPerMillionCNY float64 `json:"output_per_million_cny"`
+}
+
+type publicModelSquareModel struct {
+	Name        string                         `json:"name"`
+	TierLabel   string                         `json:"tier_label,omitempty"`
+	Platform    string                         `json:"platform"`
+	ChannelName string                         `json:"channel_name"`
+	Group       publicModelSquareGroup         `json:"group"`
+	BillingMode string                         `json:"billing_mode"`
+	Official    publicModelSquareOfficialPrice `json:"official"`
+	Site        publicModelSquareSitePrice     `json:"site"`
+	Discount    float64                        `json:"discount"`
+	Pricing     *userSupportedModelPricing     `json:"pricing"`
+}
+
+type publicModelSquareCatalog struct {
+	CurrencyRate float64                  `json:"currency_rate"`
+	Unit         string                   `json:"unit"`
+	Groups       []publicModelSquareGroup `json:"groups"`
+	Models       []publicModelSquareModel `json:"models"`
+}
+
 // List 列出当前用户可见的「可用渠道」。
 // GET /api/v1/channels/available
 func (h *AvailableChannelHandler) List(c *gin.Context) {
@@ -164,6 +205,67 @@ func (h *AvailableChannelHandler) List(c *gin.Context) {
 	}
 
 	response.Success(c, out)
+}
+
+// PublicModelSquare 返回未登录用户也可查看的模型广场数据。
+// GET /api/v1/model-square
+func (h *AvailableChannelHandler) PublicModelSquare(c *gin.Context) {
+	catalog, err := h.channelService.ListModelSquare(c.Request.Context())
+	if err != nil {
+		response.ErrorFrom(c, err)
+		return
+	}
+	response.Success(c, toPublicModelSquareCatalog(catalog))
+}
+
+func toPublicModelSquareCatalog(src *service.ModelSquareCatalog) publicModelSquareCatalog {
+	if src == nil {
+		return publicModelSquareCatalog{Groups: []publicModelSquareGroup{}, Models: []publicModelSquareModel{}}
+	}
+	groups := make([]publicModelSquareGroup, 0, len(src.Groups))
+	for _, g := range src.Groups {
+		groups = append(groups, toPublicModelSquareGroup(g))
+	}
+	models := make([]publicModelSquareModel, 0, len(src.Models))
+	for _, m := range src.Models {
+		models = append(models, publicModelSquareModel{
+			Name:        m.Name,
+			TierLabel:   m.TierLabel,
+			Platform:    m.Platform,
+			ChannelName: m.ChannelName,
+			Group:       toPublicModelSquareGroup(m.Group),
+			BillingMode: m.BillingMode,
+			Official: publicModelSquareOfficialPrice{
+				InputPerMillionUSD:  m.Official.InputPerMillionUSD,
+				OutputPerMillionUSD: m.Official.OutputPerMillionUSD,
+				InputPerMillionCNY:  m.Official.InputPerMillionCNY,
+				OutputPerMillionCNY: m.Official.OutputPerMillionCNY,
+			},
+			Site: publicModelSquareSitePrice{
+				InputPerMillionCNY:  m.Site.InputPerMillionCNY,
+				OutputPerMillionCNY: m.Site.OutputPerMillionCNY,
+			},
+			Discount: m.Discount,
+			Pricing:  toUserPricing(m.Pricing),
+		})
+	}
+	return publicModelSquareCatalog{
+		CurrencyRate: src.CurrencyRate,
+		Unit:         src.Unit,
+		Groups:       groups,
+		Models:       models,
+	}
+}
+
+func toPublicModelSquareGroup(g service.ModelSquareGroup) publicModelSquareGroup {
+	return publicModelSquareGroup{
+		ID:               g.ID,
+		Name:             g.Name,
+		Platform:         g.Platform,
+		SubscriptionType: g.SubscriptionType,
+		RateMultiplier:   g.RateMultiplier,
+		IsExclusive:      g.IsExclusive,
+	}
 }
 
 // buildPlatformSections 把一个渠道按 visibleGroups 的平台集合拆成有序的 section 列表：
