@@ -1,0 +1,28 @@
+README.md
+  s_097ee0312c4ff0::t_88f729d7734634 1-3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.7",
+  "base_commit_sha": "8ba359cb124dadeff4a67e70662e300f45ab6199",
+  "prompts": {},
+  "humans": {
+    "h_fbd3b1aef55ff6": {
+      "author": "luqian <qianqian.lu@ly.com>"
+    }
+  },
+  "sessions": {
+    "s_097ee0312c4ff0": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "commit-default-ai:github-copilot:gpt-5.4",
+        "model": "gpt-5.4"
+      },
+      "human_author": "luqian <qianqian.lu@ly.com>",
+      "custom_attributes": {
+        "attribution_source": "force_commit_ai_config",
+        "synthetic_fallback": "true"
+      }
+    }
+  }
+}
