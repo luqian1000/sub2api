@@ -1,0 +1,47 @@
+frontend/src/views/public/ModelSquareView.vue
+  s_76da6b9f9f4e93::t_c3849ae6cc3d15 1-154,156-252
+backend/internal/server/routes/auth.go
+  s_76da6b9f9f4e93::t_c3849ae6cc3d15 27-28
+backend/internal/service/channel_available.go
+  s_76da6b9f9f4e93::t_c3849ae6cc3d15 37-88,157-189,191-322
+backend/internal/service/channel_available_test.go
+  s_76da6b9f9f4e93::t_c3849ae6cc3d15 309-433
+frontend/src/api/modelSquare.ts
+  s_76da6b9f9f4e93::t_c3849ae6cc3d15 1-73
+frontend/src/router/index.ts
+  s_76da6b9f9f4e93::t_c3849ae6cc3d15 168-176,701
+frontend/src/router/__tests__/model-square-route.spec.ts
+  s_76da6b9f9f4e93::t_c3849ae6cc3d15 1-28,30-56
+frontend/src/api/__tests__/modelSquare.spec.ts
+  s_76da6b9f9f4e93::t_c3849ae6cc3d15 1-35
+backend/internal/handler/available_channel_handler.go
+  s_76da6b9f9f4e93::t_c3849ae6cc3d15 114-154,210-270
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.7",
+  "base_commit_sha": "130ec0e0aefb5715a8ad4c3635ac934f8bed6a8d",
+  "prompts": {},
+  "sessions": {
+    "s_1ce54c59e46854": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ea671-8354-7f02-a9a9-3d2f83953d52",
+        "model": "gpt-5.5"
+      },
+      "human_author": "luqian <qianqian.lu@ly.com>"
+    },
+    "s_76da6b9f9f4e93": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "commit-default-ai:codex:gpt-5.5",
+        "model": "gpt-5.5"
+      },
+      "human_author": "luqian <qianqian.lu@ly.com>",
+      "custom_attributes": {
+        "synthetic_fallback": "true",
+        "attribution_source": "force_commit_ai_config"
+      }
+    }
+  }
+}
