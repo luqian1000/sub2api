@@ -306,6 +306,131 @@ func TestFillGlobalPricingFallback_KeepsExistingPrice(t *testing.T) {
 	require.Same(t, existing, models[0].Pricing)
 }
 
+func TestListModelSquare_UsesActiveChannelsGroupsAndRates(t *testing.T) {
+	channels := []Channel{
+		{
+			ID:       1,
+			Name:     "Claude-Max",
+			Status:   StatusActive,
+			GroupIDs: []int64{10},
+			ModelPricing: []ChannelModelPricing{{
+				Platform:    "anthropic",
+				Models:      []string{"claude-opus-4.7"},
+				BillingMode: BillingModeToken,
+				InputPrice:  testPtrFloat64(5e-6),
+				OutputPrice: testPtrFloat64(25e-6),
+			}},
+		},
+		{
+			ID:       2,
+			Name:     "OpenAI-Pro",
+			Status:   StatusDisabled,
+			GroupIDs: []int64{20},
+			ModelPricing: []ChannelModelPricing{{
+				Platform:    "openai",
+				Models:      []string{"gpt-5.5"},
+				BillingMode: BillingModeToken,
+				InputPrice:  testPtrFloat64(5e-6),
+				OutputPrice: testPtrFloat64(30e-6),
+			}},
+		},
+	}
+	groupRepo := &stubGroupRepoForAvailable{
+		activeGroups: []Group{
+			{ID: 10, Name: "Claude-Max 账号", Platform: "anthropic", RateMultiplier: 0.2},
+			{ID: 20, Name: "OpenAI-Pro 账号", Platform: "openai", RateMultiplier: 0.05},
+		},
+	}
+	svc := newAvailableChannelService(channels, groupRepo)
+
+	out, err := svc.ListModelSquare(context.Background())
+
+	require.NoError(t, err)
+	require.Len(t, out.Groups, 1)
+	require.Equal(t, "Claude-Max 账号", out.Groups[0].Name)
+	require.Len(t, out.Models, 1)
+
+	item := out.Models[0]
+	require.Equal(t, "claude-opus-4.7", item.Name)
+	require.Equal(t, "anthropic", item.Platform)
+	require.Equal(t, "Claude-Max", item.ChannelName)
+	require.Equal(t, "Claude-Max 账号", item.Group.Name)
+	require.InDelta(t, 5, item.Official.InputPerMillionUSD, 1e-9)
+	require.InDelta(t, 25, item.Official.OutputPerMillionUSD, 1e-9)
+	require.InDelta(t, 35, item.Official.InputPerMillionCNY, 1e-9)
+	require.InDelta(t, 175, item.Official.OutputPerMillionCNY, 1e-9)
+	require.InDelta(t, 7, item.Site.InputPerMillionCNY, 1e-9)
+	require.InDelta(t, 35, item.Site.OutputPerMillionCNY, 1e-9)
+	require.InDelta(t, 2, item.Discount, 1e-9)
+}
+
+func TestListModelSquare_ExpandsOneModelForEachActiveGroup(t *testing.T) {
+	channels := []Channel{{
+		ID:       1,
+		Name:     "Claude",
+		Status:   StatusActive,
+		GroupIDs: []int64{10, 11},
+		ModelPricing: []ChannelModelPricing{{
+			Platform:    "anthropic",
+			Models:      []string{"claude-sonnet-4.6"},
+			BillingMode: BillingModeToken,
+			InputPrice:  testPtrFloat64(3e-6),
+			OutputPrice: testPtrFloat64(15e-6),
+		}},
+	}}
+	groupRepo := &stubGroupRepoForAvailable{
+		activeGroups: []Group{
+			{ID: 10, Name: "Max", Platform: "anthropic", RateMultiplier: 0.2},
+			{ID: 11, Name: "Kiro", Platform: "anthropic", RateMultiplier: 0.05},
+		},
+	}
+	svc := newAvailableChannelService(channels, groupRepo)
+
+	out, err := svc.ListModelSquare(context.Background())
+
+	require.NoError(t, err)
+	require.Len(t, out.Groups, 2)
+	require.Len(t, out.Models, 2)
+	require.Equal(t, "Kiro", out.Models[0].Group.Name)
+	require.Equal(t, "Max", out.Models[1].Group.Name)
+	require.InDelta(t, 0.5, out.Models[0].Discount, 1e-9)
+	require.InDelta(t, 2, out.Models[1].Discount, 1e-9)
+}
+
+func TestListModelSquare_ExpandsPricingIntervals(t *testing.T) {
+	channels := []Channel{{
+		ID:       1,
+		Name:     "Image",
+		Status:   StatusActive,
+		GroupIDs: []int64{10},
+		ModelPricing: []ChannelModelPricing{{
+			Platform:    "openai",
+			Models:      []string{"gpt-image-2"},
+			BillingMode: BillingModeImage,
+			Intervals: []PricingInterval{
+				{TierLabel: "1K", PerRequestPrice: testPtrFloat64(0.05)},
+				{TierLabel: "2K/4K", PerRequestPrice: testPtrFloat64(0.2)},
+			},
+		}},
+	}}
+	groupRepo := &stubGroupRepoForAvailable{
+		activeGroups: []Group{{ID: 10, Name: "Image-2", Platform: "openai", RateMultiplier: 0.14}},
+	}
+	svc := newAvailableChannelService(channels, groupRepo)
+
+	out, err := svc.ListModelSquare(context.Background())
+
+	require.NoError(t, err)
+	require.Len(t, out.Models, 2)
+	require.Equal(t, "1K", out.Models[0].TierLabel)
+	require.Equal(t, "2K/4K", out.Models[1].TierLabel)
+	require.InDelta(t, 0.05, out.Models[0].Official.InputPerMillionUSD, 1e-9)
+	require.InDelta(t, 0.05, out.Models[0].Official.OutputPerMillionUSD, 1e-9)
+	require.InDelta(t, 0.35, out.Models[0].Official.InputPerMillionCNY, 1e-9)
+	require.InDelta(t, 0.049, out.Models[0].Site.InputPerMillionCNY, 1e-9)
+	require.InDelta(t, 1.4, out.Models[0].Discount, 1e-9)
+}
+
 func newStubPricingServiceFromMap(data map[string]*LiteLLMModelPricing) *PricingService {
 	return &PricingService{pricingData: data}
 }

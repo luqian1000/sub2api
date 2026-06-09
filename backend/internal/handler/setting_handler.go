@@ -95,6 +95,9 @@ func (h *SettingHandler) GetPublicSettings(c *gin.Context) {
 
 		AvailableChannelsEnabled: settings.AvailableChannelsEnabled,
 
+		ModelSquareHomeEnabled: settings.ModelSquareHomeEnabled,
+		ModelSquareNavEnabled:  settings.ModelSquareNavEnabled,
+
 		AffiliateEnabled: settings.AffiliateEnabled,
 
 		RiskControlEnabled: settings.RiskControlEnabled,

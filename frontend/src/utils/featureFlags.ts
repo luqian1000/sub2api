@@ -104,6 +104,11 @@ export const FeatureFlags = {
     mode: 'opt-in',
     label: 'Available Channels',
   }),
+  modelSquareNav: defineFlag({
+    key: 'model_square_nav_enabled',
+    mode: 'opt-in',
+    label: 'Model Square Navigation',
+  }),
   payment: defineFlag({
     key: 'payment_enabled',
     mode: 'opt-out',

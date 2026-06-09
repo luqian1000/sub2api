@@ -49,6 +49,20 @@ func (s *settingUpdateRepoStub) Delete(ctx context.Context, key string) error {
 	panic("unexpected Delete call")
 }
 
+func TestSettingService_UpdateSettings_PersistsModelSquareFeatureSwitches(t *testing.T) {
+	repo := &settingUpdateRepoStub{}
+	svc := NewSettingService(repo, &config.Config{})
+
+	err := svc.UpdateSettings(context.Background(), &SystemSettings{
+		ModelSquareHomeEnabled: true,
+		ModelSquareNavEnabled:  true,
+	})
+
+	require.NoError(t, err)
+	require.Equal(t, "true", repo.updates[SettingKeyModelSquareHomeEnabled])
+	require.Equal(t, "true", repo.updates[SettingKeyModelSquareNavEnabled])
+}
+
 type settingAntigravityUARepoStub struct {
 	values map[string]string
 }

@@ -4799,6 +4799,20 @@
               </p>
             </div>
             <div class="space-y-4 p-6">
+              <div
+                class="flex items-center justify-between rounded-lg border border-primary-100 bg-primary-50/50 p-4 dark:border-primary-900/50 dark:bg-primary-900/10"
+              >
+                <div>
+                  <label class="font-medium text-gray-900 dark:text-white">
+                    {{ t('admin.settings.features.modelSquare.navEnabled') }}
+                  </label>
+                  <p class="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+                    {{ t('admin.settings.features.modelSquare.navEnabledHint') }}
+                  </p>
+                </div>
+                <Toggle v-model="form.model_square_nav_enabled" />
+              </div>
+
               <!-- Existing menu items -->
               <div
                 v-for="(item, index) in form.custom_menu_items"
@@ -5230,6 +5244,39 @@
               <p class="mt-1 text-xs text-gray-400">
                 {{ t('admin.settings.features.channelMonitor.defaultIntervalHint') }}
               </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="border-b border-gray-100 px-6 py-4 dark:border-dark-700">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+              {{ t('admin.settings.features.modelSquare.title') }}
+            </h2>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              {{ t('admin.settings.features.modelSquare.description') }}
+            </p>
+            <p class="mt-1.5 text-xs">
+              <router-link
+                to="/models"
+                class="inline-flex items-center gap-1 text-primary-600 hover:underline dark:text-primary-400"
+              >
+                {{ t('admin.settings.features.modelSquare.previewLink') }}
+                <span aria-hidden="true">→</span>
+              </router-link>
+            </p>
+          </div>
+          <div class="space-y-5 p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {{ t('admin.settings.features.modelSquare.homeEnabled') }}
+                </label>
+                <p class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                  {{ t('admin.settings.features.modelSquare.homeEnabledHint') }}
+                </p>
+              </div>
+              <Toggle v-model="form.model_square_home_enabled" />
             </div>
           </div>
         </div>
@@ -7217,6 +7264,9 @@ const form = reactive<SettingsForm>({
   channel_monitor_default_interval_seconds: 60,
   // Available Channels feature switch
   available_channels_enabled: false,
+  // Model Square public pricing entry points
+  model_square_home_enabled: false,
+  model_square_nav_enabled: false,
   // Affiliate (邀请返利) feature switch
   affiliate_enabled: false,
   // Allow user view error requests
@@ -8360,6 +8410,9 @@ async function saveSettings() {
         Number(form.channel_monitor_default_interval_seconds) || 60,
       // Available Channels feature switch
       available_channels_enabled: form.available_channels_enabled,
+      // Model Square public pricing entry points
+      model_square_home_enabled: form.model_square_home_enabled,
+      model_square_nav_enabled: form.model_square_nav_enabled,
       // Affiliate (邀请返利) feature switch
       affiliate_enabled: form.affiliate_enabled,
       allow_user_view_error_requests: form.allow_user_view_error_requests,

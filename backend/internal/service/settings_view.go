@@ -177,6 +177,10 @@ type SystemSettings struct {
 	// Available Channels feature (user-facing aggregate view)
 	AvailableChannelsEnabled bool `json:"available_channels_enabled"`
 
+	// Model Square public pricing entry points
+	ModelSquareHomeEnabled bool `json:"model_square_home_enabled"`
+	ModelSquareNavEnabled  bool `json:"model_square_nav_enabled"`
+
 	// Claude Code version check
 	MinClaudeCodeVersion string
 	MaxClaudeCodeVersion string
@@ -290,6 +294,10 @@ type PublicSettings struct {
 
 	// Available Channels feature (user-facing aggregate view)
 	AvailableChannelsEnabled bool `json:"available_channels_enabled"`
+
+	// Model Square public pricing entry points
+	ModelSquareHomeEnabled bool `json:"model_square_home_enabled"`
+	ModelSquareNavEnabled  bool `json:"model_square_nav_enabled"`
 
 	// Affiliate (邀请返利) feature toggle
 	AffiliateEnabled bool `json:"affiliate_enabled"`

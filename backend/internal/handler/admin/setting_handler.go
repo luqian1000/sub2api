@@ -296,6 +296,9 @@ func (h *SettingHandler) GetSettings(c *gin.Context) {
 
 		AvailableChannelsEnabled: settings.AvailableChannelsEnabled,
 
+		ModelSquareHomeEnabled: settings.ModelSquareHomeEnabled,
+		ModelSquareNavEnabled:  settings.ModelSquareNavEnabled,
+
 		AffiliateEnabled: settings.AffiliateEnabled,
 
 		AllowUserViewErrorRequests: settings.AllowUserViewErrorRequests,
@@ -639,6 +642,10 @@ type UpdateSettingsRequest struct {
 
 	// Available Channels feature switch (user-facing)
 	AvailableChannelsEnabled *bool `json:"available_channels_enabled"`
+
+	// Model Square public pricing entry points
+	ModelSquareHomeEnabled *bool `json:"model_square_home_enabled"`
+	ModelSquareNavEnabled  *bool `json:"model_square_nav_enabled"`
 
 	// Affiliate (邀请返利) feature switch
 	AffiliateEnabled *bool `json:"affiliate_enabled"`
@@ -1757,6 +1764,18 @@ func (h *SettingHandler) UpdateSettings(c *gin.Context) {
 			}
 			return previousSettings.AvailableChannelsEnabled
 		}(),
+		ModelSquareHomeEnabled: func() bool {
+			if req.ModelSquareHomeEnabled != nil {
+				return *req.ModelSquareHomeEnabled
+			}
+			return previousSettings.ModelSquareHomeEnabled
+		}(),
+		ModelSquareNavEnabled: func() bool {
+			if req.ModelSquareNavEnabled != nil {
+				return *req.ModelSquareNavEnabled
+			}
+			return previousSettings.ModelSquareNavEnabled
+		}(),
 		AffiliateEnabled: func() bool {
 			if req.AffiliateEnabled != nil {
 				return *req.AffiliateEnabled
@@ -2087,6 +2106,9 @@ func (h *SettingHandler) UpdateSettings(c *gin.Context) {
 		ChannelMonitorDefaultIntervalSeconds: updatedSettings.ChannelMonitorDefaultIntervalSeconds,
 
 		AvailableChannelsEnabled: updatedSettings.AvailableChannelsEnabled,
+
+		ModelSquareHomeEnabled: updatedSettings.ModelSquareHomeEnabled,
+		ModelSquareNavEnabled:  updatedSettings.ModelSquareNavEnabled,
 
 		AffiliateEnabled: updatedSettings.AffiliateEnabled,
 
@@ -2565,6 +2587,12 @@ func diffSettings(before *service.SystemSettings, after *service.SystemSettings,
 	}
 	if before.AvailableChannelsEnabled != after.AvailableChannelsEnabled {
 		changed = append(changed, "available_channels_enabled")
+	}
+	if before.ModelSquareHomeEnabled != after.ModelSquareHomeEnabled {
+		changed = append(changed, "model_square_home_enabled")
+	}
+	if before.ModelSquareNavEnabled != after.ModelSquareNavEnabled {
+		changed = append(changed, "model_square_nav_enabled")
 	}
 	if before.AffiliateEnabled != after.AffiliateEnabled {
 		changed = append(changed, "affiliate_enabled")

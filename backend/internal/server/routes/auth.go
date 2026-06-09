@@ -24,6 +24,8 @@ func RegisterAuthRoutes(
 	rateLimiter := middleware.NewRateLimiter(redisClient)
 
 	// 公开接口
+	v1.GET("/model-square", h.AvailableChannel.PublicModelSquare)
+
 	auth := v1.Group("/auth")
 	auth.Use(servermiddleware.BackendModeAuthGuard(settingService))
 	{

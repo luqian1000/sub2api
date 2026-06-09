@@ -361,6 +361,14 @@ const (
 	// sidebar entry is hidden. Defaults to false (opt-in feature).
 	SettingKeyAvailableChannelsEnabled = "available_channels_enabled"
 
+	// SettingKeyModelSquareHomeEnabled controls whether the public model pricing
+	// preview is embedded on the default home page. Defaults to false.
+	SettingKeyModelSquareHomeEnabled = "model_square_home_enabled"
+
+	// SettingKeyModelSquareNavEnabled controls whether the user sidebar shows the
+	// public model pricing page entry. Defaults to false.
+	SettingKeyModelSquareNavEnabled = "model_square_nav_enabled"
+
 	// =========================
 	// Overload Cooldown (529)
 	// =========================

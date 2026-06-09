@@ -30,3 +30,14 @@ describe('AppSidebar header styles', () => {
     expect(sidebarBrandBlockMatch?.[0]).not.toContain('overflow: hidden;')
   })
 })
+
+describe('AppSidebar model pricing placement', () => {
+  it('places model pricing directly after dashboard in user and admin menu declarations', () => {
+    expect(componentSource).toContain(
+      "items.push({ path: '/dashboard', label: t('nav.dashboard'), icon: DashboardIcon })\n    items.push({ path: '/models', label: t('nav.modelPricing')",
+    )
+    expect(componentSource).toContain(
+      "const baseItems: NavItem[] = [\n    { path: '/admin/dashboard', label: t('nav.dashboard'), icon: DashboardIcon },\n    { path: '/models', label: t('nav.modelPricing')",
+    )
+  })
+})
