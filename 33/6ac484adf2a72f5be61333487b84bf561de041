@@ -1,0 +1,109 @@
+deploy/docker-compose.hot.yml
+  s_76da6b9f9f4e93::t_79daf369992d9c 1-8
+frontend/src/views/admin/__tests__/SettingsView.spec.ts
+  s_76da6b9f9f4e93::t_79daf369992d9c 409-410,478-487,1170-1226
+frontend/src/views/HomeView.vue
+  s_76da6b9f9f4e93::t_79daf369992d9c 18,23,28-29,102-107,109-110,112-122,124-128,132-134,136-137,139-144,146-151,153-183,186-189,196-198,231,244,304-306,309-312,315-319,322-325,328-331,334-337,340-344,347-350,353-356,359-366,369-377,379-382,384-386,389-392,395-396,398-402,404-406,408-412,414-416,418-431,433-440,443-446,449,451-454,457
+backend/internal/service/domain_constants.go
+  s_76da6b9f9f4e93::t_79daf369992d9c 364-371
+frontend/src/i18n/locales/zh.ts
+  s_76da6b9f9f4e93::t_79daf369992d9c 363,5558-5566,5969
+backend/internal/service/setting_service_public_test.go
+  s_76da6b9f9f4e93::t_79daf369992d9c 107-121
+frontend/src/i18n/locales/en.ts
+  s_76da6b9f9f4e93::t_79daf369992d9c 363,5398-5406,5813
+backend/internal/server/api_contract_test.go
+  s_76da6b9f9f4e93::t_79daf369992d9c 886-887,1124-1125
+backend/internal/handler/setting_handler.go
+  s_76da6b9f9f4e93::t_79daf369992d9c 98-100
+frontend/src/api/admin/settings.ts
+  s_76da6b9f9f4e93::t_79daf369992d9c 610-613,847-850
+frontend/src/views/__tests__/HomeView.modelSquareHero.spec.ts
+  s_76da6b9f9f4e93::t_79daf369992d9c 1-134
+frontend/src/components/home/HomeModelSquarePreview.vue
+  s_76da6b9f9f4e93::t_79daf369992d9c 1-163
+frontend/src/router/__tests__/model-square-route.spec.ts
+  s_76da6b9f9f4e93::t_79daf369992d9c 48,53
+frontend/src/utils/featureFlags.ts
+  s_76da6b9f9f4e93::t_79daf369992d9c 107-111
+frontend/src/components/layout/AppSidebar.vue
+  s_76da6b9f9f4e93::t_79daf369992d9c 652,667,722
+frontend/src/views/public/ModelSquareView.vue
+  s_76da6b9f9f4e93::t_79daf369992d9c 2-3,5-6,8,11-12,18-19,24-25,34,36-37,48,53,55,57-60,62,64,66,68,70,72,74,76,78,80,82,84,87,89,94,98-159,164-165,171,211-218,221-226,229-231,233
+frontend/src/views/admin/SettingsView.vue
+  s_76da6b9f9f4e93::t_79daf369992d9c 4802-4815,5251-5283,7267-7269,8413-8415
+backend/internal/service/setting_service.go
+  s_76da6b9f9f4e93::t_79daf369992d9c 762-763,876-878,1195-1196,1260-1261,1901-1904,2829-2832,3342-3345
+frontend/src/components/home/__tests__/HomeModelSquarePreview.spec.ts
+  s_76da6b9f9f4e93::t_79daf369992d9c 1-136
+frontend/src/components/layout/__tests__/AppSidebar.spec.ts
+  s_76da6b9f9f4e93::t_79daf369992d9c 33-43
+backend/internal/handler/admin/setting_handler.go
+  s_76da6b9f9f4e93::t_79daf369992d9c 299-301,646-649,1767-1778,2110-2112,2591-2596
+frontend/src/router/index.ts
+  s_76da6b9f9f4e93::t_79daf369992d9c 173
+backend/internal/service/settings_view.go
+  s_76da6b9f9f4e93::t_79daf369992d9c 180-183,298-301
+frontend/src/stores/app.ts
+  s_76da6b9f9f4e93::t_79daf369992d9c 360-361
+frontend/src/views/public/__tests__/ModelSquareView.spec.ts
+  s_76da6b9f9f4e93::t_79daf369992d9c 1-63,65-95
+backend/internal/service/setting_service_update_test.go
+  s_76da6b9f9f4e93::t_79daf369992d9c 52-65
+backend/internal/handler/dto/settings.go
+  s_76da6b9f9f4e93::t_79daf369992d9c 244-247,323-325
+frontend/src/types/index.ts
+  s_76da6b9f9f4e93::t_79daf369992d9c 236-237
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.7",
+  "base_commit_sha": "336ac484adf2a72f5be61333487b84bf561de041",
+  "prompts": {},
+  "sessions": {
+    "s_0ebf758eeb5d2c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ea835-a935-7441-b8d2-6f62a056b324",
+        "model": "gpt-5.5"
+      },
+      "human_author": "luqian <qianqian.lu@ly.com>"
+    },
+    "s_1ce54c59e46854": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ea671-8354-7f02-a9a9-3d2f83953d52",
+        "model": "gpt-5.5"
+      },
+      "human_author": "luqian <qianqian.lu@ly.com>"
+    },
+    "s_3bf27c11c0cd83": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019eab9a-a7c0-7bf3-940f-396c524fa9e4",
+        "model": "gpt-5.5"
+      },
+      "human_author": "luqian <qianqian.lu@ly.com>"
+    },
+    "s_6765899c0cc1f2": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019eacc1-5107-74f0-a9af-37e85cfa4cf1",
+        "model": "gpt-5.5"
+      },
+      "human_author": "luqian <qianqian.lu@ly.com>"
+    },
+    "s_76da6b9f9f4e93": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "commit-default-ai:codex:gpt-5.5",
+        "model": "gpt-5.5"
+      },
+      "human_author": "luqian <qianqian.lu@ly.com>",
+      "custom_attributes": {
+        "attribution_source": "force_commit_ai_config",
+        "synthetic_fallback": "true"
+      }
+    }
+  }
+}
