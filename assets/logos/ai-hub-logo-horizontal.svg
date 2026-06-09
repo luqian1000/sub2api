@@ -1,0 +1,13 @@
+<svg width="260" height="80" viewBox="0 0 260 80" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI Hub logo horizontal">
+  <rect width="80" height="80" rx="20" fill="#6844ED"/>
+  <path
+    d="M61.25 50V30C61.25 27.76 60.06 25.69 58.12 24.57L43.12 16C41.18 14.88 38.82 14.88 36.88 16L21.88 24.57C19.94 25.69 18.75 27.76 18.75 30V50C18.75 52.24 19.94 54.31 21.88 55.43L36.88 64C38.82 65.12 41.18 65.12 43.12 64L58.12 55.43C60.06 54.31 61.25 52.24 61.25 50Z"
+    fill="white"
+    fill-opacity="0.2"
+    stroke="white"
+    stroke-width="5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <text x="104" y="50" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" letter-spacing="-0.02em">AI Hub</text>
+</svg>

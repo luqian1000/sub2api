@@ -15,30 +15,18 @@
   <!-- Default Home Page -->
   <div
     v-else
-    class="relative flex min-h-screen flex-col overflow-hidden bg-gradient-to-br from-gray-50 via-primary-50/30 to-gray-100 dark:from-dark-950 dark:via-dark-900 dark:to-dark-950"
+    class="relative flex min-h-screen flex-col overflow-hidden bg-[#f8fbff] text-slate-950 dark:bg-dark-950 dark:text-white"
   >
     <!-- Background Decorations -->
     <div class="pointer-events-none absolute inset-0 overflow-hidden">
       <div
-        class="absolute -right-40 -top-40 h-96 w-96 rounded-full bg-primary-400/20 blur-3xl"
-      ></div>
-      <div
-        class="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-primary-500/15 blur-3xl"
-      ></div>
-      <div
-        class="absolute left-1/3 top-1/4 h-72 w-72 rounded-full bg-primary-300/10 blur-3xl"
-      ></div>
-      <div
-        class="absolute bottom-1/4 right-1/4 h-64 w-64 rounded-full bg-primary-400/10 blur-3xl"
-      ></div>
-      <div
-        class="absolute inset-0 bg-[linear-gradient(rgba(20,184,166,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(20,184,166,0.03)_1px,transparent_1px)] bg-[size:64px_64px]"
+        class="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(124,58,237,0.16),transparent_36%),radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.12),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f4fbff_54%,#f8fbff_100%)] dark:bg-[radial-gradient(circle_at_50%_35%,rgba(124,58,237,0.28),transparent_36%),radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.18),transparent_28%),linear-gradient(180deg,#020617_0%,#0f172a_58%,#020617_100%)]"
       ></div>
     </div>
 
     <!-- Header -->
-    <header class="relative z-20 px-6 py-4">
-      <nav class="mx-auto flex max-w-6xl items-center justify-between">
+    <header class="absolute inset-x-0 top-0 z-30 px-6 py-4">
+      <nav class="mx-auto flex max-w-[1440px] items-center justify-between">
         <!-- Logo -->
         <div class="flex items-center">
           <div class="h-10 w-10 overflow-hidden rounded-xl shadow-md">
@@ -111,272 +99,103 @@
     </header>
 
     <!-- Main Content -->
-    <main class="relative z-10 flex-1 px-6 py-16">
-      <div class="mx-auto max-w-6xl">
-        <!-- Hero Section - Left/Right Layout -->
-        <div class="mb-12 flex flex-col items-center justify-between gap-12 lg:flex-row lg:gap-16">
-          <!-- Left: Text Content -->
-          <div class="flex-1 text-center lg:text-left">
-            <h1
-              class="mb-4 text-4xl font-bold text-gray-900 dark:text-white md:text-5xl lg:text-6xl"
-            >
-              {{ siteName }}
-            </h1>
-            <p class="mb-8 text-lg text-gray-600 dark:text-dark-300 md:text-xl">
-              {{ siteSubtitle }}
-            </p>
-
-            <!-- CTA Button -->
-            <div>
-              <router-link
-                :to="isAuthenticated ? dashboardPath : '/login'"
-                class="btn btn-primary px-8 py-3 text-base shadow-lg shadow-primary-500/30"
-              >
-                {{ isAuthenticated ? t('home.goToDashboard') : t('home.getStarted') }}
-                <Icon name="arrowRight" size="md" class="ml-2" :stroke-width="2" />
-              </router-link>
+    <main class="relative z-10 flex-1 pb-14">
+      <div class="mx-auto max-w-[1440px]">
+        <section
+          data-test="home-hero-section"
+          class="relative left-1/2 mb-12 min-h-screen w-screen -translate-x-1/2 overflow-visible"
+        >
+          <div
+            data-test="home-ai-orbit-visual"
+            class="home-connection-globe pointer-events-none absolute right-[2%] top-[10%] h-[800px] w-[800px] opacity-90"
+          >
+            <div class="home-globe-spin-layer">
+              <div class="home-globe-ring"></div>
+              <div class="home-globe-ring home-globe-ring-inner"></div>
+              <div class="home-globe-ring home-globe-ring-core"></div>
+              <div class="home-globe-latitude home-globe-latitude-mid"></div>
+              <div class="home-globe-latitude home-globe-latitude-top"></div>
+              <div class="home-globe-latitude home-globe-latitude-bottom"></div>
+              <svg viewBox="0 0 800 800" class="absolute inset-0 h-full w-full opacity-60">
+                <ellipse cx="400" cy="400" rx="200" ry="400" fill="none" stroke="#6844ED" stroke-width="3" />
+                <ellipse cx="400" cy="400" rx="100" ry="400" fill="none" stroke="#6844ED" stroke-width="3" />
+                <ellipse cx="400" cy="400" rx="300" ry="400" fill="none" stroke="#6844ED" stroke-width="3" />
+              </svg>
+              <div class="home-globe-node home-globe-node-one"></div>
+              <div class="home-globe-node home-globe-node-two"></div>
+              <div class="home-globe-node home-globe-node-three"></div>
+              <div class="home-globe-node home-globe-node-four"></div>
+              <div class="home-globe-core"></div>
             </div>
           </div>
 
-          <!-- Right: Terminal Animation -->
-          <div class="flex flex-1 justify-center lg:justify-end">
-            <div class="terminal-container">
-              <div class="terminal-window">
-                <!-- Window header -->
-                <div class="terminal-header">
-                  <div class="terminal-buttons">
-                    <span class="btn-close"></span>
-                    <span class="btn-minimize"></span>
-                    <span class="btn-maximize"></span>
-                  </div>
-                  <span class="terminal-title">terminal</span>
+          <div class="pointer-events-none absolute left-[-10%] top-[-10%] h-[50%] w-[50%] rounded-full bg-[#6844ED]/10 blur-[120px]"></div>
+          <div class="pointer-events-none absolute bottom-[-10%] right-[-10%] h-[40%] w-[40%] rounded-full bg-[#6844ED]/10 blur-[120px]"></div>
+
+          <div
+            data-test="home-hero-copy"
+            class="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-6 pb-12 pt-40"
+          >
+            <div data-test="home-hero-text" class="max-w-3xl space-y-8 text-center lg:-translate-x-10 lg:text-left xl:-translate-x-16">
+              <div>
+                <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-[#6844ED]/10 bg-[#6844ED]/5 px-3 py-1.5 text-sm font-bold text-[#6844ED]">
+                  <span class="text-base leading-none">*</span>
+                  自建号池 · 稳定如初
                 </div>
-                <!-- Terminal content -->
-                <div class="terminal-body">
-                  <div class="code-line line-1">
-                    <span class="code-prompt">$</span>
-                    <span class="code-cmd">curl</span>
-                    <span class="code-flag">-X POST</span>
-                    <span class="code-url">/v1/messages</span>
-                  </div>
-                  <div class="code-line line-2">
-                    <span class="code-comment"># Routing to upstream...</span>
-                  </div>
-                  <div class="code-line line-3">
-                    <span class="code-success">200 OK</span>
-                    <span class="code-response">{ "content": "Hello!" }</span>
-                  </div>
-                  <div class="code-line line-4">
-                    <span class="code-prompt">$</span>
-                    <span class="cursor"></span>
-                  </div>
-                </div>
+
+                <h1 class="text-5xl font-black leading-[1.16] tracking-normal text-slate-900 dark:text-white lg:text-7xl">
+                  聚合全球顶尖模型
+                  <span class="mt-2 block bg-gradient-to-r from-[#6844ED] to-[#9b7dfa] bg-clip-text text-transparent">
+                    一个 API 连接未来
+                  </span>
+                </h1>
+
+                <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600 dark:text-dark-300 lg:mx-0 lg:text-xl">
+                  专为开发者打造企业级 AI 接口平台。无缝接入 OpenAI、Anthropic、Google 等前沿大模型，稳定调度、价格透明、按量计费。
+                </p>
+              </div>
+
+              <div class="flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
+                <router-link
+                  :to="isAuthenticated ? dashboardPath : '/login'"
+                  class="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#6844ED] px-8 text-base font-bold text-white shadow-lg shadow-[#6844ED]/20 transition hover:-translate-y-0.5 hover:bg-[#5736d6] sm:w-auto"
+                >
+                  {{ isAuthenticated ? t('home.goToDashboard') : '开始免费体验' }}
+                  <Icon name="arrowRight" size="md" :stroke-width="2" />
+                </router-link>
+                <a
+                  v-if="docUrl"
+                  :href="docUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-8 text-base font-bold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 dark:border-dark-700 dark:bg-dark-900 dark:text-dark-100 dark:hover:bg-dark-800 sm:w-auto"
+                >
+                  <Icon name="book" size="md" />
+                  查看开发者文档
+                </a>
+                <router-link
+                  v-else
+                  to="/models"
+                  class="inline-flex h-14 w-full items-center justify-center rounded-full border border-slate-200 bg-white px-8 text-base font-bold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 dark:border-dark-700 dark:bg-dark-900 dark:text-dark-100 dark:hover:bg-dark-800 sm:w-auto"
+                >
+                  查看模型价格
+                </router-link>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <!-- Feature Tags - Centered -->
-        <div class="mb-12 flex flex-wrap items-center justify-center gap-4 md:gap-6">
-          <div
-            class="inline-flex items-center gap-2.5 rounded-full border border-gray-200/50 bg-white/80 px-5 py-2.5 shadow-sm backdrop-blur-sm dark:border-dark-700/50 dark:bg-dark-800/80"
-          >
-            <Icon name="swap" size="sm" class="text-primary-500" />
-            <span class="text-sm font-medium text-gray-700 dark:text-dark-200">{{
-              t('home.tags.subscriptionToApi')
-            }}</span>
-          </div>
-          <div
-            class="inline-flex items-center gap-2.5 rounded-full border border-gray-200/50 bg-white/80 px-5 py-2.5 shadow-sm backdrop-blur-sm dark:border-dark-700/50 dark:bg-dark-800/80"
-          >
-            <Icon name="shield" size="sm" class="text-primary-500" />
-            <span class="text-sm font-medium text-gray-700 dark:text-dark-200">{{
-              t('home.tags.stickySession')
-            }}</span>
-          </div>
-          <div
-            class="inline-flex items-center gap-2.5 rounded-full border border-gray-200/50 bg-white/80 px-5 py-2.5 shadow-sm backdrop-blur-sm dark:border-dark-700/50 dark:bg-dark-800/80"
-          >
-            <Icon name="chart" size="sm" class="text-primary-500" />
-            <span class="text-sm font-medium text-gray-700 dark:text-dark-200">{{
-              t('home.tags.realtimeBilling')
-            }}</span>
-          </div>
-        </div>
-
-        <!-- Features Grid -->
-        <div class="mb-12 grid gap-6 md:grid-cols-3">
-          <!-- Feature 1: Unified Gateway -->
-          <div
-            class="group rounded-2xl border border-gray-200/50 bg-white/60 p-6 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary-500/10 dark:border-dark-700/50 dark:bg-dark-800/60"
-          >
-            <div
-              class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg shadow-blue-500/30 transition-transform group-hover:scale-110"
-            >
-              <Icon name="server" size="lg" class="text-white" />
-            </div>
-            <h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-              {{ t('home.features.unifiedGateway') }}
-            </h3>
-            <p class="text-sm leading-relaxed text-gray-600 dark:text-dark-400">
-              {{ t('home.features.unifiedGatewayDesc') }}
-            </p>
-          </div>
-
-          <!-- Feature 2: Account Pool -->
-          <div
-            class="group rounded-2xl border border-gray-200/50 bg-white/60 p-6 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary-500/10 dark:border-dark-700/50 dark:bg-dark-800/60"
-          >
-            <div
-              class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg shadow-primary-500/30 transition-transform group-hover:scale-110"
-            >
-              <svg
-                class="h-6 w-6 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="1.5"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
-                />
-              </svg>
-            </div>
-            <h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-              {{ t('home.features.multiAccount') }}
-            </h3>
-            <p class="text-sm leading-relaxed text-gray-600 dark:text-dark-400">
-              {{ t('home.features.multiAccountDesc') }}
-            </p>
-          </div>
-
-          <!-- Feature 3: Billing & Quota -->
-          <div
-            class="group rounded-2xl border border-gray-200/50 bg-white/60 p-6 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary-500/10 dark:border-dark-700/50 dark:bg-dark-800/60"
-          >
-            <div
-              class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg shadow-purple-500/30 transition-transform group-hover:scale-110"
-            >
-              <svg
-                class="h-6 w-6 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="1.5"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"
-                />
-              </svg>
-            </div>
-            <h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-              {{ t('home.features.balanceQuota') }}
-            </h3>
-            <p class="text-sm leading-relaxed text-gray-600 dark:text-dark-400">
-              {{ t('home.features.balanceQuotaDesc') }}
-            </p>
-          </div>
-        </div>
-
-        <!-- Supported Providers -->
-        <div class="mb-8 text-center">
-          <h2 class="mb-3 text-2xl font-bold text-gray-900 dark:text-white">
-            {{ t('home.providers.title') }}
-          </h2>
-          <p class="text-sm text-gray-600 dark:text-dark-400">
-            {{ t('home.providers.description') }}
-          </p>
-        </div>
-
-        <div class="mb-16 flex flex-wrap items-center justify-center gap-4">
-          <!-- Claude - Supported -->
-          <div
-            class="flex items-center gap-2 rounded-xl border border-primary-200 bg-white/60 px-5 py-3 ring-1 ring-primary-500/20 backdrop-blur-sm dark:border-primary-800 dark:bg-dark-800/60"
-          >
-            <div
-              class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-orange-400 to-orange-500"
-            >
-              <span class="text-xs font-bold text-white">C</span>
-            </div>
-            <span class="text-sm font-medium text-gray-700 dark:text-dark-200">{{ t('home.providers.claude') }}</span>
-            <span
-              class="rounded bg-primary-100 px-1.5 py-0.5 text-[10px] font-medium text-primary-600 dark:bg-primary-900/30 dark:text-primary-400"
-              >{{ t('home.providers.supported') }}</span
-            >
-          </div>
-          <!-- GPT - Supported -->
-          <div
-            class="flex items-center gap-2 rounded-xl border border-primary-200 bg-white/60 px-5 py-3 ring-1 ring-primary-500/20 backdrop-blur-sm dark:border-primary-800 dark:bg-dark-800/60"
-          >
-            <div
-              class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-green-500 to-green-600"
-            >
-              <span class="text-xs font-bold text-white">G</span>
-            </div>
-            <span class="text-sm font-medium text-gray-700 dark:text-dark-200">GPT</span>
-            <span
-              class="rounded bg-primary-100 px-1.5 py-0.5 text-[10px] font-medium text-primary-600 dark:bg-primary-900/30 dark:text-primary-400"
-              >{{ t('home.providers.supported') }}</span
-            >
-          </div>
-          <!-- Gemini - Supported -->
-          <div
-            class="flex items-center gap-2 rounded-xl border border-primary-200 bg-white/60 px-5 py-3 ring-1 ring-primary-500/20 backdrop-blur-sm dark:border-primary-800 dark:bg-dark-800/60"
-          >
-            <div
-              class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-600"
-            >
-              <span class="text-xs font-bold text-white">G</span>
-            </div>
-            <span class="text-sm font-medium text-gray-700 dark:text-dark-200">{{ t('home.providers.gemini') }}</span>
-            <span
-              class="rounded bg-primary-100 px-1.5 py-0.5 text-[10px] font-medium text-primary-600 dark:bg-primary-900/30 dark:text-primary-400"
-              >{{ t('home.providers.supported') }}</span
-            >
-          </div>
-          <!-- Antigravity - Supported -->
-          <div
-            class="flex items-center gap-2 rounded-xl border border-primary-200 bg-white/60 px-5 py-3 ring-1 ring-primary-500/20 backdrop-blur-sm dark:border-primary-800 dark:bg-dark-800/60"
-          >
-            <div
-              class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500 to-pink-600"
-            >
-              <span class="text-xs font-bold text-white">A</span>
-            </div>
-            <span class="text-sm font-medium text-gray-700 dark:text-dark-200">{{ t('home.providers.antigravity') }}</span>
-            <span
-              class="rounded bg-primary-100 px-1.5 py-0.5 text-[10px] font-medium text-primary-600 dark:bg-primary-900/30 dark:text-primary-400"
-              >{{ t('home.providers.supported') }}</span
-            >
-          </div>
-          <!-- More - Coming Soon -->
-          <div
-            class="flex items-center gap-2 rounded-xl border border-gray-200/50 bg-white/40 px-5 py-3 opacity-60 backdrop-blur-sm dark:border-dark-700/50 dark:bg-dark-800/40"
-          >
-            <div
-              class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-gray-500 to-gray-600"
-            >
-              <span class="text-xs font-bold text-white">+</span>
-            </div>
-            <span class="text-sm font-medium text-gray-700 dark:text-dark-200">{{ t('home.providers.more') }}</span>
-            <span
-              class="rounded bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium text-gray-500 dark:bg-dark-700 dark:text-dark-400"
-              >{{ t('home.providers.soon') }}</span
-            >
-          </div>
+        <div data-test="home-model-square-section" class="mt-20 px-6">
+          <HomeModelSquarePreview v-if="showModelSquareHome" />
         </div>
       </div>
     </main>
 
     <!-- Footer -->
     <footer class="relative z-10 border-t border-gray-200/50 px-6 py-8 dark:border-dark-800/50">
-      <div
-        class="mx-auto flex max-w-6xl flex-col items-center justify-center gap-4 text-center sm:flex-row sm:text-left"
-      >
+        <div
+          class="mx-auto flex max-w-[1440px] flex-col items-center justify-center gap-4 text-center sm:flex-row sm:text-left"
+        >
         <p class="text-sm text-gray-500 dark:text-dark-400">
           &copy; {{ currentYear }} {{ siteName }}. {{ t('home.footer.allRightsReserved') }}
         </p>
@@ -409,6 +228,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore, useAppStore } from '@/stores'
 import LocaleSwitcher from '@/components/common/LocaleSwitcher.vue'
+import HomeModelSquarePreview from '@/components/home/HomeModelSquarePreview.vue'
 import Icon from '@/components/icons/Icon.vue'
 
 const { t } = useI18n()
@@ -419,9 +239,9 @@ const appStore = useAppStore()
 // Site settings - directly from appStore (already initialized from injected config)
 const siteName = computed(() => appStore.cachedPublicSettings?.site_name || appStore.siteName || 'Sub2API')
 const siteLogo = computed(() => appStore.cachedPublicSettings?.site_logo || appStore.siteLogo || '')
-const siteSubtitle = computed(() => appStore.cachedPublicSettings?.site_subtitle || 'AI API Gateway Platform')
 const docUrl = computed(() => appStore.cachedPublicSettings?.doc_url || appStore.docUrl || '')
 const homeContent = computed(() => appStore.cachedPublicSettings?.home_content || '')
+const showModelSquareHome = computed(() => appStore.cachedPublicSettings?.model_square_home_enabled === true)
 
 // Check if homeContent is a URL (for iframe display)
 const isHomeContentUrl = computed(() => {
@@ -481,164 +301,160 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Terminal Container */
-.terminal-container {
-  position: relative;
-  display: inline-block;
+.home-connection-globe {
+  mask-image: linear-gradient(to bottom, black 0%, black 72%, transparent 92%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 72%, transparent 92%);
 }
 
-/* Terminal Window */
-.terminal-window {
-  width: 420px;
-  background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
-  border-radius: 14px;
-  box-shadow:
-    0 25px 50px -12px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  overflow: hidden;
-  transform: perspective(1000px) rotateX(2deg) rotateY(-2deg);
-  transition: transform 0.3s ease;
+.home-globe-spin-layer {
+  position: absolute;
+  inset: 0;
+  animation: home-globe-spin 100s linear infinite;
 }
 
-.terminal-window:hover {
-  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(-4px);
+.home-globe-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 3px solid rgba(104, 68, 237, 0.4);
 }
 
-/* Terminal Header */
-.terminal-header {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  background: rgba(30, 41, 59, 0.8);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.home-globe-ring-inner {
+  inset: 32px;
+  border-color: rgba(104, 68, 237, 0.3);
+  border-style: dashed;
 }
 
-.terminal-buttons {
-  display: flex;
-  gap: 8px;
+.home-globe-ring-core {
+  inset: 64px;
+  border-width: 2px;
+  border-color: rgba(104, 68, 237, 0.2);
 }
 
-.terminal-buttons span {
-  width: 12px;
+.home-globe-latitude {
+  position: absolute;
+  height: 2px;
+  background: rgba(104, 68, 237, 0.24);
+}
+
+.home-globe-latitude-mid {
+  left: 0;
+  top: 50%;
+  width: 100%;
+  background: rgba(104, 68, 237, 0.3);
+}
+
+.home-globe-latitude-top {
+  left: 6%;
+  top: 25%;
+  width: 88%;
+}
+
+.home-globe-latitude-bottom {
+  bottom: 25%;
+  left: 6%;
+  width: 88%;
+}
+
+.home-globe-node {
+  position: absolute;
   height: 12px;
-  border-radius: 50%;
+  width: 12px;
+  border-radius: 9999px;
+  background: #6844ed;
+  box-shadow: 0 0 20px rgba(104, 68, 237, 0.9);
+  animation: home-node-pulse 3s ease-in-out infinite;
 }
 
-.btn-close {
-  background: #ef4444;
-}
-.btn-minimize {
-  background: #eab308;
-}
-.btn-maximize {
-  background: #22c55e;
-}
-
-.terminal-title {
-  flex: 1;
-  text-align: center;
-  font-size: 12px;
-  font-family: ui-monospace, monospace;
-  color: #64748b;
-  margin-right: 52px;
+.home-globe-node::after {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 2px;
+  width: 210px;
+  content: '';
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(104, 68, 237, 0.45), transparent);
 }
 
-/* Terminal Body */
-.terminal-body {
-  padding: 20px 24px;
-  font-family: ui-monospace, 'Fira Code', monospace;
-  font-size: 14px;
-  line-height: 2;
+.home-globe-node-one {
+  left: 72%;
+  top: 26%;
 }
 
-.code-line {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  opacity: 0;
-  animation: line-appear 0.5s ease forwards;
+.home-globe-node-one::after {
+  transform: rotate(148deg);
 }
 
-.line-1 {
-  animation-delay: 0.3s;
+.home-globe-node-two {
+  left: 20%;
+  top: 42%;
+  animation-delay: 0.5s;
 }
-.line-2 {
+
+.home-globe-node-two::after {
+  transform: rotate(8deg);
+}
+
+.home-globe-node-three {
+  left: 58%;
+  top: 73%;
   animation-delay: 1s;
 }
-.line-3 {
-  animation-delay: 1.8s;
-}
-.line-4 {
-  animation-delay: 2.5s;
+
+.home-globe-node-three::after {
+  transform: rotate(-112deg);
 }
 
-@keyframes line-appear {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
+.home-globe-node-four {
+  left: 38%;
+  top: 18%;
+  animation-delay: 1.4s;
+}
+
+.home-globe-node-four::after {
+  transform: rotate(62deg);
+}
+
+.home-globe-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  height: 48px;
+  width: 48px;
+  transform: translate(-50%, -50%);
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: #6844ed;
+  box-shadow: 0 0 60px 15px rgba(104, 68, 237, 0.5);
+}
+
+.home-globe-core::after {
+  height: 24px;
+  width: 24px;
+  border-radius: 9999px;
+  background: white;
+  content: '';
+  animation: home-node-pulse 2s ease-in-out infinite;
+}
+
+@keyframes home-globe-spin {
   to {
-    opacity: 1;
-    transform: translateY(0);
+    transform: rotate(360deg);
   }
 }
 
-.code-prompt {
-  color: #22c55e;
-  font-weight: bold;
-}
-.code-cmd {
-  color: #38bdf8;
-}
-.code-flag {
-  color: #a78bfa;
-}
-.code-url {
-  color: #14b8a6;
-}
-.code-comment {
-  color: #64748b;
-  font-style: italic;
-}
-.code-success {
-  color: #22c55e;
-  background: rgba(34, 197, 94, 0.15);
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: 600;
-}
-.code-response {
-  color: #fbbf24;
-}
-
-/* Blinking Cursor */
-.cursor {
-  display: inline-block;
-  width: 8px;
-  height: 16px;
-  background: #22c55e;
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
+@keyframes home-node-pulse {
   0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
   50% {
     opacity: 1;
+    transform: scale(1.35);
   }
-  51%,
-  100% {
-    opacity: 0;
-  }
-}
-
-/* Dark mode adjustments */
-:deep(.dark) .terminal-window {
-  box-shadow:
-    0 25px 50px -12px rgba(0, 0, 0, 0.6),
-    0 0 0 1px rgba(20, 184, 166, 0.2),
-    0 0 40px rgba(20, 184, 166, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 </style>

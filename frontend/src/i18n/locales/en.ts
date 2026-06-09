@@ -360,6 +360,7 @@ export default {
     users: 'Users',
     groups: 'Groups',
     channels: 'Channels',
+    modelPricing: 'Model Pricing',
     availableChannels: 'Available Channels',
     subscriptions: 'Subscriptions',
     accounts: 'Accounts',
@@ -5394,6 +5395,15 @@ export default {
           enabled: 'Enable Available Channels',
           enabledHint: 'When off, the sidebar entry is hidden and the endpoint returns an empty list.',
         },
+        modelSquare: {
+          title: 'Model Pricing',
+          description: 'Control the home-page placement for the public model pricing page. Configure the sidebar entry under Custom Menu Pages. Disabled by default.',
+          previewLink: 'Preview model pricing page',
+          homeEnabled: 'Show model pricing on home',
+          homeEnabledHint: 'When enabled, the default home page embeds a model pricing preview. Custom home content still takes over the page.',
+          navEnabled: 'Show model pricing in sidebar',
+          navEnabledHint: 'When enabled, users and admins see the model pricing entry in their personal menu.',
+        },
         riskControl: {
           title: 'Risk Control',
           description: 'Enable the content moderation menu and gateway audit entry point. Disabled by default.',
@@ -5800,7 +5810,7 @@ export default {
       },
       customMenu: {
         title: 'Custom Menu Pages',
-        description: 'Add custom iframe pages to the sidebar navigation. Each page can be visible to regular users or administrators.',
+        description: 'Configure sidebar navigation entries, including the built-in model pricing entry and custom iframe pages. Each custom page can be visible to regular users or administrators.',
         itemLabel: 'Menu Item #{n}',
         name: 'Menu Name',
         namePlaceholder: 'e.g. Help Center',

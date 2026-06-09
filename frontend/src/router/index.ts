@@ -170,7 +170,7 @@ const routes: RouteRecordRaw[] = [
     name: 'ModelSquare',
     component: () => import('@/views/public/ModelSquareView.vue'),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       title: '模型广场'
     }
   },

@@ -406,6 +406,8 @@ const baseSettingsResponse = {
   payment_visible_method_wxpay_source: "invalid-source",
   payment_visible_method_alipay_enabled: true,
   payment_visible_method_wxpay_enabled: true,
+  model_square_home_enabled: false,
+  model_square_nav_enabled: false,
   openai_advanced_scheduler_enabled: false,
   balance_low_notify_enabled: false,
   balance_low_notify_threshold: 0,
@@ -470,6 +472,16 @@ async function openUsersTab(wrapper: ReturnType<typeof mountView>) {
 
   expect(usersTabButton).toBeDefined();
   await usersTabButton?.trigger("click");
+  await flushPromises();
+}
+
+async function openGeneralTab(wrapper: ReturnType<typeof mountView>) {
+  const generalTabButton = wrapper
+    .findAll("button")
+    .find((node) => node.text().includes("admin.settings.tabs.general"));
+
+  expect(generalTabButton).toBeDefined();
+  await generalTabButton?.trigger("click");
   await flushPromises();
 }
 
@@ -1153,5 +1165,62 @@ describe("admin SettingsView platform quota matrix", () => {
     const quotas = payload["default_platform_quotas"] as Record<string, Record<string, unknown>>;
     // 不管输入是什么，提交值应为 null（而非 "" 或 NaN）
     expect(quotas["anthropic"]?.["daily"]).toBe(null);
+  });
+});
+
+describe("admin SettingsView custom menu placement", () => {
+  beforeEach(() => {
+    getSettings.mockReset();
+    updateSettings.mockReset();
+    getWebSearchEmulationConfig.mockReset();
+    updateWebSearchEmulationConfig.mockReset();
+    getAdminApiKey.mockReset();
+    getOverloadCooldownSettings.mockReset();
+    getRateLimit429CooldownSettings.mockReset();
+    updateRateLimit429CooldownSettings.mockReset();
+    getStreamTimeoutSettings.mockReset();
+    getRectifierSettings.mockReset();
+    getBetaPolicySettings.mockReset();
+    getGroups.mockReset();
+    listProxies.mockReset();
+    getProviders.mockReset();
+    updateProvider.mockReset();
+    createProvider.mockReset();
+    deleteProvider.mockReset();
+    fetchPublicSettings.mockReset();
+    adminSettingsFetch.mockReset();
+    showError.mockReset();
+    showSuccess.mockReset();
+
+    getSettings.mockResolvedValue({ ...baseSettingsResponse });
+    updateSettings.mockImplementation(async (payload) => ({
+      ...baseSettingsResponse,
+      ...payload,
+    }));
+    getWebSearchEmulationConfig.mockResolvedValue({ enabled: false, providers: [] });
+    updateWebSearchEmulationConfig.mockResolvedValue({ enabled: false, providers: [] });
+    getAdminApiKey.mockResolvedValue({ exists: false, masked_key: "" });
+    getOverloadCooldownSettings.mockResolvedValue({});
+    getRateLimit429CooldownSettings.mockResolvedValue({});
+    updateRateLimit429CooldownSettings.mockResolvedValue({});
+    getStreamTimeoutSettings.mockResolvedValue({});
+    getRectifierSettings.mockResolvedValue({});
+    getBetaPolicySettings.mockResolvedValue({});
+    getGroups.mockResolvedValue([]);
+    listProxies.mockResolvedValue({ items: [] });
+    getProviders.mockResolvedValue({ data: [] });
+  });
+
+  it("puts the model pricing sidebar switch under custom menu pages", async () => {
+    const wrapper = mountView();
+    await flushPromises();
+    await openGeneralTab(wrapper);
+
+    const cards = wrapper.findAll(".card");
+    const customMenuCard = cards.find((card) => card.text().includes("admin.settings.customMenu.title"));
+    const modelPricingCard = cards.find((card) => card.text().includes("admin.settings.features.modelSquare.title"));
+
+    expect(customMenuCard?.text()).toContain("admin.settings.features.modelSquare.navEnabled");
+    expect(modelPricingCard?.text()).not.toContain("admin.settings.features.modelSquare.navEnabled");
   });
 });

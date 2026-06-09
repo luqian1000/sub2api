@@ -45,12 +45,12 @@ vi.mock('@/composables/useRoutePrefetch', () => ({
 }))
 
 describe('router model square route', () => {
-  it('registers the model square page as a public route', async () => {
+  it('registers the model square page as an authenticated app route', async () => {
     const { default: router } = await import('@/router')
     const route = router.getRoutes().find((record) => record.name === 'ModelSquare')
 
     expect(route?.path).toBe('/models')
-    expect(route?.meta.requiresAuth).toBe(false)
+    expect(route?.meta.requiresAuth).toBe(true)
     expect(route?.meta.title).toBe('模型广场')
   })
 })

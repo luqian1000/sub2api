@@ -360,6 +360,7 @@ export default {
     users: '用户管理',
     groups: '分组管理',
     channels: '渠道管理',
+    modelPricing: '模型价格',
     availableChannels: '可用渠道',
     subscriptions: '订阅管理',
     accounts: '账号管理',
@@ -5554,6 +5555,15 @@ export default {
           enabled: '启用可用渠道',
           enabledHint: '关闭后用户端侧边栏入口隐藏，接口返回空数组。',
         },
+        modelSquare: {
+          title: '模型价格',
+          description: '控制公开模型价格页在首页的展示入口；侧边栏入口请在“自定义菜单页面”中配置。默认关闭。',
+          previewLink: '预览模型价格页',
+          homeEnabled: '首页展示模型价格',
+          homeEnabledHint: '开启后默认首页会嵌入模型价格预览；自定义首页内容仍按自定义内容展示。',
+          navEnabled: '侧边栏展示模型价格',
+          navEnabledHint: '开启后用户和管理员个人菜单会显示模型价格入口。',
+        },
         riskControl: {
           title: '风控中心',
           description: '启用内容审计菜单和全端点请求审核入口。默认关闭。',
@@ -5956,7 +5966,7 @@ export default {
       },
       customMenu: {
         title: '自定义菜单页面',
-        description: '添加自定义 iframe 页面到侧边栏导航。每个页面可以设置为普通用户或管理员可见。',
+        description: '配置侧边栏导航入口，包含内置模型价格入口和自定义 iframe 页面。每个自定义页面可以设置为普通用户或管理员可见。',
         itemLabel: '菜单项 #{n}',
         name: '菜单名称',
         namePlaceholder: '如：帮助中心',
